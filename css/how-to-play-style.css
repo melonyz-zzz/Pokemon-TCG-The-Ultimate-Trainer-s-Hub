@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Barlow:wght@400;500;600&display=swap');
+
+
+body {
+    background-color: #050810 !important; 
+    position: relative;
+    z-index: 0;
+    overflow-x: hidden; 
+}
+
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+
+.ambient-light {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px); 
+    z-index: -2;        
+    pointer-events: none;
+}
+
+
+.light-fire {
+    top: -15%; left: -10%; 
+    width: 50vw; height: 50vw; 
+    background: rgba(239, 68, 68, 0.25); 
+}
+
+.light-water {
+    bottom: -10%; right: -5%; 
+    width: 60vw; height: 60vw; 
+    background: rgba(59, 130, 246, 0.2); 
+}
+
+.light-electric {
+    top: 35%; left: 40%; 
+    width: 40vw; height: 30vw; 
+    background: rgba(250, 204, 21, 0.12); 
+}
+
+
+
+
+/* ========Battle field==============*/
+
+.playmat-wrapper {
+    overflow-x: auto; 
+    padding: 20px;
+}
+
+.playmat-area {
+    position: relative; 
+    width: 850px;       
+    height: 480px;      
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #3b82f6;
+    border-radius: 20px;
+}
+
+
+.zone {
+    position: absolute; 
+    border: 2px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+
+
+.zone-active {
+    width: 280px; height: 180px;
+    top: 30px; left: 285px; 
+    border-color: #ef4444;
+}
+
+
+.zone-bench {
+    width: 530px; height: 180px;
+    bottom: 30px; left: 160px;
+    border-color: #3b82f6;
+}
+
+.zone-deck {
+    width: 120px; height: 160px;
+    top: 30px; right: 20px; 
+    border-color: #facc15;
+}
+
+.zone-prize {
+    width: 120px; height: 420px; 
+    top: 30px; left: 20px; 
+    border-color: #a855f7;
+}
+
+.zone-discard {
+    width: 120px; height: 160px;
+    bottom: 30px; right: 20px;
+    border-color: #9ca3af;
+}
+
+
+.bench-slots-container {
+    display: flex;
+    gap: 12px; 
+    margin-top: 10px;
+}
+.bench-slot {
+    width: 75px; height: 105px; 
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.5);
+    border-radius: 5px;
+}
+
+.step-marker {
+    position: absolute;
+    top: -15px; left: -15px; 
+    width: 40px; height: 40px;
+    background: #000;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+}
+
+
+
+.zone-info {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    background: #000;
+    border-radius: 10px;
+}
+
+
+
+
+
+.zone:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+    transition: 0.3s;
+}
+
+/*================= Navbar===============*/
+
+.glass-nav {
+    background: rgba(8, 14, 8, 0.92) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.25);
+    top: 4px; /* below gold bar */
+}
+
+.navbar-brand {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.6rem !important;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    color: #b0bec5 !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: color 0.25s ease;
+    position: relative;
+    padding-bottom: 4px !important;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; right: 50%;
+    height: 2px;
+    background:  #facc15;
+    transition: left 0.3s, right 0.3s;
+}
+.nav-link:hover::after, .nav-link.active::after {
+    left: 0; right: 0;
+}
+.nav-link:hover, .nav-link.active {
+    color: #facc15 !important;
+}
+

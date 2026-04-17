@@ -1,0 +1,456 @@
+/* =========================================
+   style-collection.css
+   My Collection page styles
+   UCCD2323 Coursework
+   ========================================= */
+
+:root {
+    --poke-yellow: #FFCB05;
+    --poke-dark:   #1a1a2e;
+    --poke-red:    #e63946;
+    --tcg-yellow:  #facc15;
+}
+
+/* Push page content below the fixed navbar */
+body {
+    padding-top: 72px;
+    background-color: #000000;
+}
+
+/* =========================================
+   NAVBAR — matches homepage style
+   (glass-nav, navbar-brand, nav-link all
+    use Bebas Neue and Barlow Condensed)
+   ========================================= */
+.glass-nav {
+    background: rgba(8, 14, 8, 0.92) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.25);
+    top: 4px;
+}
+
+.navbar-brand {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.6rem !important;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    color: #b0bec5 !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: color 0.25s ease;
+    position: relative;
+    padding-bottom: 4px !important;
+}
+
+/* Animated underline on hover */
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: var(--tcg-yellow);
+    transition: left 0.3s, right 0.3s;
+}
+.nav-link:hover::after,
+.nav-link.active::after {
+    left: 0;
+    right: 0;
+}
+.nav-link:hover,
+.nav-link.active {
+    color: var(--tcg-yellow) !important;
+}
+
+/* =========================================
+   HERO SECTION
+   ========================================= */
+.hero-section {
+    background: var(--poke-dark);
+    border-bottom: 4px solid var(--poke-yellow);
+    padding: 36px 0 28px;
+    text-align: center;
+}
+.hero-section h1 {
+    color: var(--poke-yellow);
+    font-weight: 800;
+    font-size: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.hero-section p {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+
+
+/* =========================================
+   STAT BAR  (numbers from localStorage & sessionStorage)
+   ========================================= */
+.stat-bar {
+    background: var(--poke-dark);
+    padding: 12px 0;
+    margin-bottom: 20px;
+}
+.stat-cell {
+    text-align: center;
+    color: white;
+}
+.stat-cell .num {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--poke-yellow);
+    line-height: 1;
+}
+.stat-cell .lbl {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 3px;
+}
+
+/* =========================================
+   SESSION STORAGE BANNER
+   ========================================= */
+.sess-banner {
+    background: linear-gradient(90deg, #1D9E75, #0F6E56);
+    color: white;
+    font-size: 0.82rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sess-banner .tag {
+    margin-left: auto;
+    opacity: 0.6;
+    font-size: 0.72rem;
+}
+
+/* =========================================
+   TYPE CHART  (bar chart built from localStorage data)
+   ========================================= */
+.type-chart {
+    background: var(--poke-dark);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+}
+.type-chart h6 {
+    color: var(--poke-yellow);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+}
+.tbar-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+.tbar-lbl {
+    font-size: 0.7rem;
+    color: white;
+    width: 68px;
+    text-align: right;
+    flex-shrink: 0;
+}
+.tbar-track {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    height: 7px;
+    overflow: hidden;
+}
+.tbar-fill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+.tbar-num {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.45);
+    width: 18px;
+    text-align: right;
+}
+
+/* =========================================
+   FILTER TOOLBAR
+   ========================================= */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 16px;
+}
+.fsel {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    border: 1.5px solid #ddd;
+    background: white;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+}
+.fsel:focus {
+    border-color: var(--poke-yellow);
+}
+
+/* View toggle buttons (Cookie saves the preference) */
+.view-toggle {
+    display: flex;
+    border: 1.5px solid #ddd;
+    border-radius: 20px;
+    overflow: hidden;
+}
+.view-toggle button {
+    background: transparent;
+    border: none;
+    padding: 5px 12px;
+    font-size: 0.8rem;
+    color: #777;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.view-toggle button.active {
+    background: var(--poke-dark);
+    color: var(--poke-yellow);
+}
+
+/* =========================================
+   CARD GRID VIEW
+   ========================================= */
+.pcard {
+    border: none;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: #1e1e1e;
+    color: #fff;
+}
+.pcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
+}
+.pcard .card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 14px;
+    background: #2a2a2a;
+}
+
+/* Type and rarity label pills on card image */
+.type-pill {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+    background: var(--poke-yellow);
+    color: var(--poke-dark);
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+.rarity-pill {
+    position: absolute;
+    top: 9px;
+    left: 9px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 0.6rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+.card-added {
+    font-size: 0.68rem;
+    color: #aaa;
+}
+
+/* =========================================
+   CARD LIST VIEW
+   ========================================= */
+#card-grid.list-view {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+}
+#card-grid.list-view .list-card-wrap {
+    width: 100%;
+}
+#card-grid.list-view .pcard {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 10px;
+}
+#card-grid.list-view .pcard:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+#card-grid.list-view .list-img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    flex-shrink: 0;
+    padding: 6px;
+    background: #2a2a2a;
+    border-radius: 10px 0 0 10px;
+}
+#card-grid.list-view .type-pill,
+#card-grid.list-view .rarity-pill {
+    position: static;
+    display: inline-block;
+    margin: 0 3px 3px 0;
+}
+#card-grid.list-view .list-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    flex: 1;
+    gap: 10px;
+}
+
+/* =========================================
+   EMPTY STATE MESSAGES
+   ========================================= */
+.empty-wrap {
+    text-align: center;
+    padding: 60px 20px;
+}
+.empty-wrap .eicon {
+    font-size: 3.5rem;
+    opacity: 0.35;
+    margin-bottom: 14px;
+}
+.empty-wrap h4 {
+    color: #555;
+    font-weight: 700;
+}
+.empty-wrap p {
+    color: #999;
+    font-size: 0.88rem;
+}
+
+/* =========================================
+   REMOVE CARD ANIMATION
+   ========================================= */
+@keyframes pop-out {
+    0%   { transform: scale(1);    opacity: 1; }
+    60%  { transform: scale(1.04); opacity: 1; }
+    100% { transform: scale(0);    opacity: 0; }
+}
+.removing {
+    animation: pop-out 0.28s ease forwards;
+    pointer-events: none;
+}
+
+/* =========================================
+   TOAST NOTIFICATION
+   ========================================= */
+.toast-wrap {
+    position: fixed;
+    bottom: 1.4rem;
+    right: 1.4rem;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: none;
+}
+.toast-item {
+    background: #1e2235;
+    border: 1px solid #2a2f4a;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 0.84rem;
+    color: #e8eaf6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: tIn 0.28s ease, tOut 0.28s ease 2.1s forwards;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+@keyframes tIn  { from { opacity: 0; transform: translateX(16px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes tOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* =========================================
+   TRAINER NAME MODAL POPUP
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-box {
+    background: var(--poke-dark);
+    border: 2px solid var(--poke-yellow);
+    border-radius: 16px;
+    padding: 28px 24px;
+    width: 310px;
+    text-align: center;
+}
+.modal-box h5 {
+    color: var(--poke-yellow);
+    font-weight: 800;
+    margin-bottom: 6px;
+}
+.modal-box p {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.8rem;
+    margin-bottom: 14px;
+}
+.modal-box input {
+    width: 100%;
+    padding: 8px 14px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(255, 203, 5, 0.4);
+    background: #0d0f1a;
+    color: white;
+    font-size: 0.9rem;
+    outline: none;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+}
+.modal-box input:focus {
+    border-color: var(--poke-yellow);
+}
+.btn-save-modal {
+    background: var(--poke-yellow);
+    color: var(--poke-dark);
+    border: none;
+    border-radius: 20px;
+    padding: 8px 0;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    font-size: 0.9rem;
+}
+.btn-save-modal:hover {
+    opacity: 0.9;
+}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Collection - Pokemon TCG Hub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style-collection.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="index.html">
+                <i class="fa-solid fa-gamepad text-warning me-2"></i>TCG Fan Hub
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navNav">
+                <i class="fa-solid fa-bars text-white fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="how-to-play.html">How to Play</a></li>
+                    <li class="nav-item"><a class="nav-link" href="gallery.html">Database</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="my-collection.html">My Collection</a></li>
+                    <li class="nav-item"><a class="nav-link " href="profile.html">Profile</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1>&#11088; My Collection</h1>
+            <p>Your saved Pokemon cards &mdash; powered by Local Storage</p>
+        </div>
+    </section>
+
+    <div class="stat-bar">
+        <div class="container">
+            <div class="row g-0 text-center">
+                <div class="col-3 stat-cell border-end border-secondary">
+                    <div class="num" id="s-total">0</div>
+                    <div class="lbl">Cards Saved</div>
+                </div>
+                <div class="col-3 stat-cell border-end border-secondary">
+                    <div class="num" id="s-session">0</div>
+                    <div class="lbl">This Session</div>
+                </div>
+                <div class="col-3 stat-cell border-end border-secondary">
+                    <div class="num" id="s-types">0</div>
+                    <div class="lbl">Types</div>
+                </div>
+                <div class="col-3 stat-cell">
+                    <div class="num" id="s-showing">0</div>
+                    <div class="lbl">Showing</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main class="container my-4">
+
+        <div class="sess-banner" id="sess-notice" style="display:none;">
+            <i class="fas fa-clock"></i>
+            <span id="sess-msg"></span>
+            <span class="tag">sessionStorage</span>
+        </div>
+
+        <div class="type-chart" id="type-chart" style="display:none;">
+            <h6>&#128202; Collection by Type <small style="font-weight:400;opacity:0.6;">(localStorage)</small></h6>
+            <div id="type-bars"></div>
+        </div>
+
+        <div class="toolbar">
+            <div class="input-group" style="max-width:230px;">
+                <span class="input-group-text bg-dark border-dark text-warning">
+                    <i class="fas fa-search" style="font-size:0.75rem;"></i>
+                </span>
+                <input type="text" id="inp-search" class="form-control form-control-sm" placeholder="Search by name...">
+            </div>
+
+            <select class="fsel" id="sel-type">
+                <option value="">All Types</option>
+                <option value="Fire">Fire</option>
+                <option value="Water">Water</option>
+                <option value="Grass">Grass</option>
+                <option value="Lightning">Lightning</option>
+                <option value="Psychic">Psychic</option>
+                <option value="Fighting">Fighting</option>
+                <option value="Darkness">Darkness</option>
+                <option value="Metal">Metal</option>
+                <option value="Dragon">Dragon</option>
+                <option value="Colorless">Colorless</option>
+            </select>
+
+            <select class="fsel" id="sel-rarity">
+                <option value="">All Rarities</option>
+                <option value="Common">Common</option>
+                <option value="Uncommon">Uncommon</option>
+                <option value="Rare">Rare</option>
+                <option value="Rare Holo">Rare Holo</option>
+                <option value="Rare Holo EX">Rare Holo EX</option>
+                <option value="Rare Ultra">Rare Ultra</option>
+                <option value="Rare Secret">Rare Secret</option>
+            </select>
+
+            <select class="fsel" id="sel-sort">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="az">Name A to Z</option>
+                <option value="za">Name Z to A</option>
+                <option value="type">By Type</option>
+            </select>
+
+            <div class="view-toggle">
+                <button id="btn-grid" class="active"><i class="fas fa-th"></i></button>
+                <button id="btn-list"><i class="fas fa-list"></i></button>
+            </div>
+
+            <button class="btn btn-outline-danger btn-sm" id="btn-clear">
+                <i class="fas fa-trash me-1"></i>Clear All
+            </button>
+        </div>
+
+        <div class="row g-3" id="card-grid"></div>
+
+        <div class="empty-wrap" id="empty-collection" style="display:none;">
+            <div class="eicon">&#128235;</div>
+            <h4>Your collection is empty!</h4>
+            <p>Go to the Card Database, click the heart on any card, and it will appear here.</p>
+            <a href="gallery.html" class="btn btn-warning fw-bold mt-2">
+                <i class="fas fa-search me-2"></i>Browse Cards
+            </a>
+        </div>
+
+        <div class="empty-wrap" id="empty-filter" style="display:none;">
+            <div class="eicon">&#128270;</div>
+            <h4>No cards match your filters</h4>
+            <button class="btn btn-outline-secondary btn-sm mt-2" id="btn-reset">Reset Filters</button>
+        </div>
+
+    </main>
+
+    <div id="name-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <h5>&#127942; Set Trainer Name</h5>
+            <p>Saved as a Cookie — remembered for 30 days!</p>
+            <input type="text" id="inp-trainer" maxlength="20" placeholder="Your trainer name...">
+            <button class="btn-save-modal" id="btn-save-name">Save &#127850;</button>
+        </div>
+    </div>
+
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <footer class="text-white py-4 text-center mt-auto border-top border-secondary">
+        <p class="mb-1 text-secondary" style="font-size: 0.9rem">&copy; 2026 UCCD2323 Student Project.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./storage-manager.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            /* =====================================================
+               VIEW TOGGLE  (purely UI switch)
+            ===================================================== */
+            $('#btn-grid').on('click', function () {
+                setView('grid');
+            });
+
+            $('#btn-list').on('click', function () {
+                setView('list');
+            });
+
+            function setView(mode) {
+                if (mode === 'list') {
+                    $('#card-grid').addClass('list-view');
+                    $('#btn-list').addClass('active');
+                    $('#btn-grid').removeClass('active');
+                } else {
+                    $('#card-grid').removeClass('list-view');
+                    $('#btn-grid').addClass('active');
+                    $('#btn-list').removeClass('active');
+                }
+            }
+
+            /* =====================================================
+               SESSION STORAGE  (Chapter 4 — sessionStorage)
+               Counts how many times the user visits this page.
+               The count resets when the browser tab is closed.
+            ===================================================== */
+            var visits = sessionStorage.getItem('collectionVisits');
+            if (visits === null) {
+                visits = 1;
+            } else {
+                visits = parseInt(visits) + 1;
+            }
+            sessionStorage.setItem('collectionVisits', visits);
+
+            $('#s-session').text(visits);
+
+            if (visits === 1) {
+                $('#sess-msg').text('Session started. This counter resets when you close the tab.');
+            } else {
+                $('#sess-msg').text('You have visited this page ' + visits + ' time(s) this session.');
+            }
+            $('#sess-notice').fadeIn();
+
+
+            /*TYPE CHART  (reads from localStorage via PokemonApp)*/
+            var typeColors = {
+                Fire: '#ff4d1e',
+                Water: '#3b9ddd',
+                Grass: '#49c96d',
+                Lightning: '#ffcb05',
+                Psychic: '#c86dd7',
+                Fighting: '#d4621c',
+                Darkness: '#4a4a7a',
+                Metal: '#8899aa',
+                Dragon: '#6253c8',
+                Colorless: '#aabbcc',
+                Unknown: '#666666'
+            };
+
+            function renderTypeChart(cards) {
+                if (cards.length === 0) {
+                    $('#type-chart').hide();
+                    return;
+                }
+
+                var counts = {};
+                var i;
+                for (i = 0; i < cards.length; i++) {
+                    var t = cards[i].type || 'Unknown';
+                    if (counts[t] === undefined) {
+                        counts[t] = 0;
+                    }
+                    counts[t] = counts[t] + 1;
+                }
+
+                var max = 0;
+                var typeName;
+                for (typeName in counts) {
+                    if (counts[typeName] > max) {
+                        max = counts[typeName];
+                    }
+                }
+
+                var html = '';
+                for (typeName in counts) {
+                    var count = counts[typeName];
+                    var pct = Math.round(count / max * 100);
+                    var color = typeColors[typeName] || '#888888';
+                    html += '<div class="tbar-row">';
+                    html += '<div class="tbar-lbl">' + typeName + '</div>';
+                    html += '<div class="tbar-track"><div class="tbar-fill" style="width:' + pct + '%;background:' + color + '"></div></div>';
+                    html += '<div class="tbar-num">' + count + '</div>';
+                    html += '</div>';
+                }
+
+                $('#type-bars').html(html);
+                $('#type-chart').show();
+            }
+
+
+            /*RENDER CARDS  (reads from localStorage via PokemonApp)*/
+            function render() {
+                var allCards = PokemonApp.collection.getAll();
+                var searchVal = $('#inp-search').val().toLowerCase().trim();
+                var typeVal = $('#sel-type').val();
+                var rarVal = $('#sel-rarity').val();
+                var sortVal = $('#sel-sort').val();
+                var isList = $('#card-grid').hasClass('list-view');
+
+                var shown = [];
+                var i;
+                for (i = 0; i < allCards.length; i++) {
+                    var card = allCards[i];
+                    var okSearch = (searchVal === '') || (card.name.toLowerCase().indexOf(searchVal) !== -1);
+                    var okType = (typeVal === '') || (card.type === typeVal);
+                    var okRar = (rarVal === '') || (card.rarity === rarVal);
+                    if (okSearch && okType && okRar) {
+                        shown.push(card);
+                    }
+                }
+
+                shown.sort(function (a, b) {
+                    if (sortVal === 'az') return a.name.localeCompare(b.name);
+                    if (sortVal === 'za') return b.name.localeCompare(a.name);
+                    if (sortVal === 'type') return (a.type || '').localeCompare(b.type || '');
+                    if (sortVal === 'oldest') return (a.addedAt || '').localeCompare(b.addedAt || '');
+                    return 0;
+                });
+                if (sortVal === 'newest') {
+                    shown.reverse();
+                }
+
+                var uTypes = [];
+                for (i = 0; i < allCards.length; i++) {
+                    var ct = allCards[i].type;
+                    if (ct && ct !== 'Unknown' && uTypes.indexOf(ct) === -1) {
+                        uTypes.push(ct);
+                    }
+                }
+                $('#s-total').text(allCards.length);
+                $('#s-types').text(uTypes.length);
+                $('#s-showing').text(shown.length);
+
+                renderTypeChart(allCards);
+
+                $('#card-grid').empty();
+                $('#empty-collection').hide();
+                $('#empty-filter').hide();
+
+                if (allCards.length === 0) {
+                    $('#empty-collection').show();
+                    return;
+                }
+                if (shown.length === 0) {
+                    $('#empty-filter').show();
+                    return;
+                }
+
+                for (i = 0; i < shown.length; i++) {
+                    var c = shown[i];
+                    var idx = allCards.indexOf(c);
+                    var img = c.image || 'https://via.placeholder.com/200x200?text=?';
+                    var type = c.type || 'Unknown';
+                    var rarity = c.rarity || '?';
+                    var added = c.addedAt || 'N/A';
+
+                    if (isList) {
+                        $('#card-grid').append(
+                            '<div id="cw-' + idx + '" class="list-card-wrap">' +
+                            '<div class="pcard">' +
+                            '<a href="card-details.html?id=' + c.id + '">' +
+                            '<img src="' + img + '" class="list-img" alt="' + c.name + '" onerror="this.src=\'https://via.placeholder.com/72x72?text=?\'"></a>' +
+                            '<div class="list-body">' +
+                            '<div>' +
+                            '<div class="fw-bold" style="font-size:0.9rem;">' + c.name + '</div>' +
+                            '<span class="type-pill">' + type + '</span>' +
+                            '<span class="rarity-pill">' + rarity + '</span>' +
+                            '<div class="card-added mt-1">Added: ' + added + '</div>' +
+                            '</div>' +
+                            '<button onclick="removeCard(' + idx + ')" class="btn btn-outline-danger btn-sm">' +
+                            '<i class="fas fa-trash"></i></button>' +
+                            '</div></div></div>'
+                        );
+                    } else {
+                        $('#card-grid').append(
+                            '<div class="col-xl-3 col-lg-4 col-md-6 col-sm-6" id="cw-' + idx + '">' +
+                            '<div class="card pcard h-100 position-relative">' +
+                            '<a href="card-details.html?id=' + c.id + '" style="text-decoration:none;color:inherit;">' +
+                            '<span class="type-pill">' + type + '</span>' +
+                            '<span class="rarity-pill">' + rarity + '</span>' +
+                            '<img src="' + img + '" class="card-img-top" alt="' + c.name + '" onerror="this.src=\'https://via.placeholder.com/200x200?text=??\'">' +
+                            '<div class="card-body text-center py-2">' +
+                            '<h6 class="card-title fw-bold mb-1" style="font-size:0.88rem;">' + c.name + '</h6>' +
+                            '<p class="card-added mb-0">Added: ' + added + '</p>' +
+                            '</div></a>' +
+                            '<div class="px-3 pb-3 pt-1">' +
+                            '<button onclick="removeCard(' + idx + ')" class="btn btn-outline-danger btn-sm w-100">' +
+                            '<i class="fas fa-trash me-1"></i>Remove</button>' +
+                            '</div></div></div>'
+                        );
+                    }
+                }
+            }
+
+            /* REMOVE A CARD */
+            window.removeCard = function (idx) {
+                var $wrapper = $('#cw-' + idx);
+                $wrapper.addClass('removing');
+                setTimeout(function () {
+                    PokemonApp.collection.remove(idx);
+                    render();
+                    showToast('Card removed from collection', '#ff4d6d');
+                }, 280);
+            };
+
+            /* CLEAR ALL CARDS*/
+            $('#btn-clear').on('click', function () {
+                if (PokemonApp.collection.getAll().length === 0) return;
+                if (confirm('Remove ALL cards from your collection? This cannot be undone.')) {
+                localStorage.removeItem(PokemonApp.collection.getKey());
+                    render();
+                    showToast('Collection cleared!', '#ff4d6d');
+                }
+            });
+
+            /*RESET FILTERS */
+            $('#btn-reset').on('click', function () {
+                $('#inp-search').val('');
+                $('#sel-type').val('');
+                $('#sel-rarity').val('');
+                $('#sel-sort').val('newest');
+                render();
+            });
+
+            
+            /*FILTER AND SEARCH EVENTS*/
+            $('#inp-search').on('input', function () {
+                render();
+            });
+
+            $('#sel-type').on('change', function () {
+                render();
+            });
+
+            $('#sel-rarity').on('change', function () {
+                render();
+            });
+
+            $('#sel-sort').on('change', function () {
+                render();
+            });
+
+            /*TOAST NOTIFICATION HELPER */
+            function showToast(msg, color) {
+                var $t = $('<div class="toast-item"><span style="color:' + color + ';">&#9679;</span> ' + msg + '</div>');
+                $('#toast-wrap').append($t);
+                setTimeout(function () {
+                    $t.remove();
+                }, 2500);
+            }
+
+            /*INITIAL RENDER on page load */
+            render();
+
+        }); // end $(document).ready
+    </script>
+
+</body>
+
+</html>

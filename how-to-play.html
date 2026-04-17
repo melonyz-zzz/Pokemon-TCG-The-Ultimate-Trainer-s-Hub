@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>How to Play | Pokémon TCG Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="css/how-to-play-style.css" />
+</head>
+
+<body class="bg-dark text-light">
+    <div class="ambient-light light-fire"></div>
+    <div class="ambient-light light-water"></div>
+    <div class="ambient-light light-electric"></div>
+
+    <!--Navbar-->
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white fs-4" href="how-to-play.html">
+                <i class="fa-solid fa-gamepad text-warning me-2"></i>TCG Fan Hub
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars text-white fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="how-to-play.html">How to Play</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gallery.html">Database</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="my-collection.html">My Collection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--Simulation battlefield-->
+    <header class="text-center pt-5 pb-2 mt-5">
+        <div class="container pt-4">
+            <div class="badge bg-dark border border-secondary text-light px-3 py-2 rounded-pill mb-2">
+                Holographic Simulation
+            </div>
+            <h2 class="fw-bold mb-2 text-white">BATTLEFIELD SETUP</h2>
+            <p class="text-secondary mx-auto" style="max-width: 650px">
+                Follow the sequence to set up your board.
+            </p>
+        </div>
+    </header>
+    <!--Component of simulation battlefield-->
+    <main class="container pb-5">
+        <section class="mb-5 mt-3">
+            <div class="playmat-wrapper">
+                <div class="playmat-area">
+                    <div class="zone zone-deck">
+                        <div class="step-marker">1</div>
+                        <i class="fa-solid fa-layer-group fs-2 text-warning mb-2"></i>
+                        <h6 class="fw-bold text-white m-0">Deck</h6>
+                        <div class="zone-info text-warning">Draw 7</div>
+                    </div>
+
+                    <div class="zone zone-active">
+                        <div class="step-marker">2</div>
+                        <i class="fa-solid fa-fire fs-1 text-danger mb-2"></i>
+                        <h5 class="fw-bold text-white m-0">Active Pokémon</h5>
+                        <div class="zone-info text-danger">Place 1 Basic (Face-down)</div>
+                    </div>
+                    <div class="zone zone-bench">
+                        <div class="step-marker">3</div>
+                        <div class="bench-slots-container">
+                            <div class="bench-slot"></div>
+                            <div class="bench-slot"></div>
+                            <div class="bench-slot"></div>
+                            <div class="bench-slot"></div>
+                            <div class="bench-slot"></div>
+                        </div>
+                        <div class="zone-info text-primary mt-2">Bench (Up to 5)</div>
+                    </div>
+                    <div class="zone zone-prize">
+                        <div class="step-marker">4</div>
+                        <i class="fa-solid fa-gift fs-2 text-info mb-2"></i>
+                        <h6 class="fw-bold text-white m-0">Prize Cards</h6>
+                        <div class="zone-info text-info">Set 6 cards</div>
+                    </div>
+                    <div class="zone zone-discard">
+                        <i class="fa-solid fa-trash-can fs-3 text-secondary mb-2"></i>
+                        <h6 class="fw-bold text-secondary m-0">Discard</h6>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Guidelines for turn flow-->
+        <section class="mb-5">
+            <h3 class="fw-bold mb-4 text-white border-bottom border-secondary pb-2">
+                <i class="fa-solid fa-rotate text-success me-2"></i>Turn Flow: What
+                You Can Do
+            </h3>
+            <p class="text-secondary mb-4">
+                A Pokémon TCG match is played in turns. On your turn, follow these
+                steps in order:
+            </p>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card bg-dark border-secondary h-100 shadow-sm">
+                        <div class="card-body">
+                            <span class="badge bg-warning text-dark mb-2 fs-6">Step 1: Start</span>
+                            <h5 class="card-title text-white fw-bold">Draw a Card</h5>
+                            <p class="card-text text-secondary small">
+                                You MUST draw a card from your deck at the beginning of your
+                                turn. If you can't, you lose the game.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card bg-dark border-secondary h-100 shadow-sm">
+                        <div class="card-body">
+                            <span class="badge bg-info text-dark mb-2 fs-6">Step 2: Actions</span>
+                            <h5 class="card-title text-white fw-bold">Main Phase</h5>
+                            <ul class="text-secondary small ps-3 mb-0">
+                                <li>Put Basic Pokémon on the Bench.</li>
+                                <li>Evolve your Pokémon.</li>
+                                <li>Attach <strong>ONE</strong> Energy card.</li>
+                                <li>Play Trainer cards (Items, Supporters).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card bg-dark border-secondary h-100 shadow-sm">
+                        <div class="card-body">
+                            <span class="badge bg-danger text-white mb-2 fs-6">Step 3: Combat</span>
+                            <h5 class="card-title text-white fw-bold">Attack</h5>
+                            <p class="card-text text-secondary small">
+                                Check if your Active Pokémon has enough Energy. Declare an
+                                attack, apply damage, and then your turn immediately ends.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="card bg-dark border-secondary h-100 shadow-sm">
+                        <div class="card-body">
+                            <span class="badge bg-secondary text-white mb-2 fs-6">Step 4: End</span>
+                            <h5 class="card-title text-white fw-bold">Pass Turn</h5>
+                            <p class="card-text text-secondary small">
+                                After you attack (or if you choose to pass without attacking),
+                                it is now your opponent's turn.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!--Guidelines for core mechanics-->
+        <section class="mb-5">
+            <h3 class="fw-bold mb-4 text-white border-bottom border-secondary pb-2">
+                Core Mechanics
+            </h3>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <div class="p-3 mb-3 bg-dark border-start border-4 border-warning rounded">
+                        <h5 class="fw-bold text-warning">Energy Cost</h5>
+                        <p class="text-secondary small mb-0">
+                            Attach matching Energy cards. Only ONE per turn.
+                        </p>
+                    </div>
+                    <div class="p-3 mb-3 bg-dark border-start border-4 border-info rounded">
+                        <h5 class="fw-bold text-info">Weakness & Resistance</h5>
+                        <p class="text-secondary small mb-0">
+                            Weakness (x2 damage), Resistance (-30 damage).
+                        </p>
+                    </div>
+                    <div class="p-3 bg-dark border-start border-4 border-success rounded">
+                        <h5 class="fw-bold text-success">Evolution Stages</h5>
+                        <p class="text-secondary small mb-0">
+                            Basic -> Stage 1 -> Stage 2. Cannot evolve on first turn.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <img src="https://images.pokemontcg.io/base1/58_hires.png" alt="Card"
+                        class="img-fluid rounded shadow-lg" style="max-width: 250px" />
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-white py-4 text-center mt-auto border-top border-secondary">
+        <p class="mb-1 text-secondary" style="font-size: 0.9rem">
+            &copy; 2026 UCCD2323 Student Project.
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

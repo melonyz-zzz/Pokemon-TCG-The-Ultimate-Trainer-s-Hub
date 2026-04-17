@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Details | Pokémon TCG</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/card-details-style.css" />
+</head>
+<body>
+
+
+  <!-- LOADING -->
+  <div id="loadingState" class="container text-center py-5">
+    <div class="spinner-border text-warning" role="status"></div>
+    <p class="mt-2 text-muted">Loading card details...</p>
+  </div>
+
+  <!-- CARD DETAIL CONTENT -->
+  <div id="detailContent" style="display:none;">
+    <div class="container py-4">
+
+      <!-- Back button -->
+      <a href="gallery.html" class="btn btn-sm mb-4" style="background-color: #facc15; color: #0b0b09;">
+    <i class="bi bi-arrow-left"></i> Back to Gallery
+  </a>
+
+      <div class="row g-4">
+ 
+        <!-- LEFT: Card Image -->
+        <div class="col-12 col-md-4 text-center">
+          <img id="cardImage" src="" alt="" />
+
+          <!-- Favourite Button -->
+          <div class="mt-3">
+            <button id="favBtn" class="btn btn-outline-danger w-100">🤍 Add to Favourites</button>
+          </div>
+
+          <!-- Set Info -->
+          <div class="card mt-3">
+            <div class="card-body text-center">
+              <p class="info-label mb-1">Set</p>
+              <p id="setName" class="fw-bold mb-0">—</p>
+              <p id="cardNumber" class="text-muted small">—</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Card Info -->
+        <div class="col-12 col-md-8">
+
+          <!-- Name & Type -->
+          <h2 id="cardName" class="fw-bold text-warning">—</h2>
+          <div id="typeChips" class="mb-3"></div>
+
+          <!-- HP -->
+          <div id="hpSection" class="mb-3" style="display:none;">
+            <p class="info-label mb-1">HP</p>
+            <div class="progress" style="height:20px;">
+              <div id="hpBar" class="progress-bar bg-warning" style="width:0%"></div>
+            </div>
+            <p id="hpVal" class="fw-bold mt-1">—</p>
+          </div>
+
+          <!-- Card Info -->
+          <h5 class="fw-bold border-bottom pb-2 mt-4">Card Info</h5>
+          <div class="row g-2" id="infoGrid"></div>
+
+          <!-- Attacks -->
+          <div id="attacksSection">
+            <h5 class="fw-bold border-bottom pb-2 mt-4">Attacks</h5>
+            <div id="attacksList"></div>
+          </div>
+
+          <!-- Weaknesses & Resistances -->
+          <div id="wrSection">
+            <h5 class="fw-bold border-bottom pb-2 mt-4">Weaknesses & Resistances</h5>
+            <div id="wrGrid" class="d-flex gap-2 flex-wrap"></div>
+          </div>
+
+          <!-- Recently Viewed -->
+          <div id="rvSection" style="display:none;">
+            <h5 class="fw-bold border-bottom pb-2 mt-4">Recently Viewed</h5>
+            <div id="rvList" class="d-flex gap-2 flex-wrap"></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Storage Manager (teammate's file) -->
+  <script src="storage-manager.js"></script>
+
+  <script>
+    // ==========================================
+    // SESSION STORAGE - Recently Viewed
+    // ==========================================
+    function getRecent() {
+      return JSON.parse(sessionStorage.getItem('ptcg_recently_viewed') || '[]');
+    }
+
+    function addRecent(card) {
+      var list = getRecent();
+      // Remove if already exists
+      var newList = [];
+      for (var i = 0; i < list.length; i++) {
+        if (list[i].id !== card.id) newList.push(list[i]);
+      }
+      // Add to front
+      newList.unshift({ id: card.id, name: card.name });
+      // Keep only 6
+      if (newList.length > 6) newList = newList.slice(0, 6);
+      sessionStorage.setItem('ptcg_recently_viewed', JSON.stringify(newList));
+    }
+
+    // ==========================================
+    // FAVOURITES - using teammate's storage manager (FIXED)
+    // ==========================================
+    function isFav(cardId) {
+     
+      return PokemonApp.collection.has(cardId);
+    }
+
+    function updateFavBtn(cardId) {
+      if (isFav(cardId)) {
+        $('#favBtn').removeClass('btn-outline-danger').addClass('btn-danger').html('❤️ Saved to Favourites');
+      } else {
+        $('#favBtn').removeClass('btn-danger').addClass('btn-outline-danger').html('🤍 Add to Favourites');
+      }
+    }
+
+    // ==========================================
+    // RENDER CARD DETAILS
+    // ==========================================
+    function renderCard(card) {
+      document.title = card.name + ' | Pokémon TCG';
+
+      // Image
+      var imgSrc = '';
+      if (card.images) {
+        imgSrc = card.images.large || card.images.small || '';
+      }
+      $('#cardImage').attr('src', imgSrc).attr('alt', card.name);
+
+      // Name
+      $('#cardName').text(card.name);
+
+      // Types
+      var typeHtml = '';
+      var types = card.types || [];
+      for (var i = 0; i < types.length; i++) {
+        typeHtml += '<span class="badge bg-secondary me-1">' + types[i] + '</span>';
+      }
+      $('#typeChips').html(typeHtml || '<span class="badge bg-secondary">Unknown</span>');
+
+      // HP
+      if (card.hp) {
+        $('#hpSection').show();
+        $('#hpVal').text('HP: ' + card.hp);
+        var pct = Math.min(100, (parseInt(card.hp) / 340) * 100);
+        $('#hpBar').css('width', pct + '%').text(card.hp);
+      }
+
+      // Info tiles
+      var infoItems = [
+        { label: 'Rarity',    value: card.rarity     || '—' },
+        { label: 'Supertype', value: card.supertype   || '—' },
+        { label: 'Artist',    value: card.artist      || '—' },
+        { label: 'Series',    value: card.set ? (card.set.series || '—') : '—' },
+        { label: 'Release',   value: card.set ? (card.set.releaseDate || '—') : '—' },
+        { label: 'Subtypes',  value: (card.subtypes || []).join(', ') || '—' }
+      ];
+      var infoHtml = '';
+      for (var i = 0; i < infoItems.length; i++) {
+        infoHtml += '<div class="col-6 col-sm-4">'
+          + '<div class="card p-2 text-center h-100">'
+          + '<p class="info-label mb-1">' + infoItems[i].label + '</p>'
+          + '<p class="fw-bold mb-0 small">' + infoItems[i].value + '</p>'
+          + '</div></div>';
+      }
+      $('#infoGrid').html(infoHtml);
+
+      // Set info
+      $('#setName').text(card.set ? (card.set.name || '—') : '—');
+      if (card.number) {
+        var total = card.set ? (card.set.printedTotal || '?') : '?';
+        $('#cardNumber').text('#' + card.number + ' / ' + total);
+      }
+      // Attacks
+      var attacks = card.attacks || [];
+      if (attacks.length > 0) {
+        var attackHtml = '';
+        for (var i = 0; i < attacks.length; i++) {
+          var atk = attacks[i];
+          attackHtml += '<div class="attack-card">'
+            + '<div class="d-flex justify-content-between align-items-center">'
+            + '<span class="fw-bold">' + atk.name + '</span>'
+            + '<span class="badge bg-warning text-dark fs-6">' + (atk.damage || '—') + '</span>'
+            + '</div>'
+            + (atk.text ? '<p class="text-muted small mt-2 mb-0">' + atk.text + '</p>' : '')
+            + '</div>';
+        }
+        $('#attacksList').html(attackHtml);
+      } else {
+        $('#attacksSection').hide();
+      }
+
+      // Weaknesses & Resistances
+      var wrHtml = '';
+      var weaknesses  = card.weaknesses  || [];
+      var resistances = card.resistances || [];
+      for (var i = 0; i < weaknesses.length; i++) {
+        wrHtml += '<span class="badge bg-danger">⚠️ Weak: ' + weaknesses[i].type + ' ' + weaknesses[i].value + '</span>';
+      }
+      for (var i = 0; i < resistances.length; i++) {
+        wrHtml += '<span class="badge bg-success">🛡️ Resist: ' + resistances[i].type + ' ' + resistances[i].value + '</span>';
+      }
+      if (card.retreatCost && card.retreatCost.length) {
+        wrHtml += '<span class="badge bg-secondary">🔄 Retreat: ' + card.retreatCost.length + '</span>';
+      }
+      if (wrHtml) {
+        $('#wrGrid').html(wrHtml);
+      } else {
+        $('#wrSection').hide();
+      }
+
+      // Favourite button
+      updateFavBtn(card.id);
+
+      $('#favBtn').on('click', function() {
+        if (isFav(card.id)) {
+          
+          PokemonApp.collection.removeById(card.id);
+          console.log('[Card Details] Removed:', card.name);
+        } else {
+          
+          var success = PokemonApp.collection.addSilent({
+            id:     card.id,
+            name:   card.name,
+            image:  card.images ? (card.images.small || '') : '',
+            type:   (card.types && card.types[0]) ? card.types[0] : 'Unknown',
+            rarity: card.rarity || 'Unknown'
+          });
+          if (success) {
+            console.log('[Card Details] Added:', card.name);
+          }
+        }
+        updateFavBtn(card.id);
+      });
+
+      // Recently viewed
+      addRecent(card);
+      var recent = getRecent();
+      var rvHtml = '';
+      for (var i = 0; i < recent.length; i++) {
+        if (recent[i].id !== card.id) {
+          rvHtml += '<a href="card-details.html?id=' + recent[i].id + '" class="btn btn-outline-secondary btn-sm recently-viewed-item">'
+            + recent[i].name + '</a>';
+        }
+      }
+      if (rvHtml) {
+        $('#rvSection').show();
+        $('#rvList').html(rvHtml);
+      }
+
+      // Show content
+      $('#loadingState').hide();
+      $('#detailContent').show();
+    }
+
+    // ==========================================
+    // INIT - Get card from sessionStorage or API
+    // ==========================================
+    $(document).ready(function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var urlId     = urlParams.get('id');
+      var cached    = sessionStorage.getItem('ptcg_selected_card');
+      var card      = cached ? JSON.parse(cached) : null;
+
+      if (card && (!urlId || card.id === urlId)) {
+        // Use cached data from sessionStorage (faster)
+        renderCard(card);
+      } else if (urlId) {
+        // Fallback: fetch from API if opened via direct link
+        $.ajax({
+          url: 'https://api.pokemontcg.io/v2/cards/' + urlId,
+          success: function(res) {
+            renderCard(res.data);
+          },
+          error: function() {
+            $('#loadingState').html(
+              '<p class="text-danger">Card not found. <a href="gallery.html">Back to Gallery</a></p>'
+            );
+          }
+        });
+      } else {
+        window.location.href = 'gallery.html';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Database | Pokémon TCG</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Font Awesome (for gamepad icon, same as homepage) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <!-- Google Fonts: Bebas Neue + Barlow Condensed (same as homepage) -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/gallery-style.css" />
+   
+  </head>
+  <body>
+
+    <!-- NAVBAR (same as teammates) -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-white fs-4" href="index.html">
+            <i class="fa-solid fa-gamepad text-warning me-2"></i>TCG Fan Hub
+          </a>
+          <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <i class="fa-solid fa-bars text-white fs-3"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center gap-2">
+              <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="how-to-play.html">How to Play</a></li>
+              <li class="nav-item"><a class="nav-link" href="gallery.html">Database</a></li>
+              <li class="nav-item"><a class="nav-link" href="my-collection.html">My Collection</a></li>
+              <li class="nav-item"><a class="nav-link active" href="profile.html">Profile</a></li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+    <!-- PAGE HEADER -->
+    <div class="text-white py-4 mb-4" style="background-color: #0f2842;">
+      <div class="container text-center">
+        <h1 class="fw-bold text-warning">Card Database</h1>
+        <p class="mb-0" style="color: #facc15;">Browse and collect your favourite Pokémon TCG cards</p>
+      </div>
+    </div>
+
+    <!-- SEARCH & FILTER -->
+    <div class="container mb-4">
+      <div class="row g-2">
+        <div class="col-12 col-md-5">
+          <input type="text" id="searchInput" class="form-control" placeholder="Search card name..." />
+        </div>
+        <div class="col-6 col-md-3">
+          <select id="typeFilter" class="form-select">
+            <option value="">All Types</option>
+            <option value="Fire">Fire</option>
+            <option value="Water">Water</option>
+            <option value="Grass">Grass</option>
+            <option value="Lightning">Lightning</option>
+            <option value="Psychic">Psychic</option>
+            <option value="Fighting">Fighting</option>
+            <option value="Darkness">Darkness</option>
+            <option value="Metal">Metal</option>
+            <option value="Dragon">Dragon</option>
+            <option value="Colorless">Colorless</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
+          <select id="rarityFilter" class="form-select">
+            <option value="">All Rarities</option>
+            <option value="Common">Common</option>
+            <option value="Uncommon">Uncommon</option>
+            <option value="Rare">Rare</option>
+            <option value="Rare Holo">Rare Holo</option>
+            <option value="Rare Holo EX">Rare Holo EX</option>
+            <option value="Rare Ultra">Rare Ultra</option>
+            <option value="Rare Secret">Rare Secret</option>
+            <option value="Unknown">Unknown</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2">
+          <button id="favFilterBtn" class="btn btn-outline-danger w-100">❤️ Favourites</button>
+        </div>
+      </div>
+      <p id="resultsCount" class="text-muted mt-2 mb-0 small"></p>
+    </div>
+
+    <!-- CARD GRID -->
+    <div class="container">
+      <div class="row g-3" id="galleryGrid">
+        <!-- Cards will be loaded here -->
+        <div class="col-12 text-center py-5">
+          <div class="spinner-border text-warning" role="status"></div>
+          <p class="mt-2" style="color: #facc15;">Loading cards...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="container my-4">
+      <div id="paginationWrap" class="d-flex justify-content-center gap-2 flex-wrap"></div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Storage Manager (teammate's file) -->
+    <script src="storage-manager.js"></script>
+
+    <script>
+      // ==========================================
+      // VARIABLES
+      // ==========================================
+      var allCards    = [];
+      var filtered    = [];
+      var currentPage = 1;
+      var pageSize    = 20;
+      var showFavOnly = false;
+
+// ==========================================
+// AUTO-SET ACTIVE NAV LINK
+// ==========================================
+function setActiveNavLink() {
+  var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+  
+
+  $('.nav-link').removeClass('active');
+  
+  if (currentPage === '' || currentPage === 'index.html') {
+    $('a[href="index.html"]').addClass('active');
+  } else if (currentPage === 'gallery.html') {
+    $('a[href="gallery.html"]').addClass('active');
+  } else if (currentPage === 'how-to-play.html') {
+    $('a[href="how-to-play.html"]').addClass('active');
+  } else if (currentPage === 'my-collection.html') {
+    $('a[href="my-collection.html"]').addClass('active');
+  }
+}
+
+// ==========================================
+// INIT
+// ==========================================
+$(document).ready(function() {
+  setActiveNavLink();  
+  loadFilterState();
+  fetchCards();
+});
+
+      // ==========================================
+      // LOCAL STORAGE - Save & Load filter state
+      // ==========================================
+      function saveFilterState() {
+        var state = {
+          search:  $('#searchInput').val(),
+          type:    $('#typeFilter').val(),
+          rarity:  $('#rarityFilter').val(),
+          page:    currentPage,
+          favOnly: showFavOnly
+        };
+        localStorage.setItem('ptcg_filter', JSON.stringify(state));
+      }
+
+      function loadFilterState() {
+        var saved = localStorage.getItem('ptcg_filter');
+        if (!saved) return;
+        var state = JSON.parse(saved);
+        $('#searchInput').val(state.search || '');
+        $('#typeFilter').val(state.type   || '');
+        $('#rarityFilter').val(state.rarity || '');
+        currentPage = state.page    || 1;
+        showFavOnly = state.favOnly || false;
+        if (showFavOnly) {
+          $('#favFilterBtn').addClass('btn-danger').removeClass('btn-outline-danger');
+        }
+      }
+
+      // ==========================================
+      // FAVOURITES - using teammate's storage manager
+      // ==========================================
+      function isFav(cardId) {
+        var favs = PokemonApp.collection.getAll();
+        for (var i = 0; i < favs.length; i++) {
+          if (favs[i].id === cardId) return true;
+        }
+        return false;
+      }
+
+      function updateFavCount() {
+        var favs = PokemonApp.collection.getAll();
+        $('#favCount').text(favs.length);
+      }
+
+      // ==========================================
+      // FETCH CARDS FROM API (jQuery AJAX)
+      // ==========================================
+      function fetchCards() {
+        $.ajax({
+          url: 'https://api.pokemontcg.io/v2/cards',
+          method: 'GET',
+          data: { pageSize: 250, page: 1 },
+          success: function(res) {
+            allCards = res.data || [];
+            applyFilters();
+          },
+          error: function() {
+            $('#galleryGrid').html(
+              '<div class="col-12 text-center py-5"><p class="text-danger">Failed to load cards. Please try again later.</p></div>'
+            );
+          }
+        });
+      }
+
+      // ==========================================
+      // FILTER CARDS
+      // ==========================================
+      function applyFilters() {
+        var search = $('#searchInput').val().toLowerCase();
+        var type   = $('#typeFilter').val();
+        var rarity = $('#rarityFilter').val();
+        var favs   = PokemonApp.collection.getAll();
+
+        filtered = [];
+
+        for (var i = 0; i < allCards.length; i++) {
+          var card = allCards[i];
+
+          var matchName   = card.name.toLowerCase().indexOf(search) !== -1;
+          var cardType    = (card.types && card.types[0]) ? card.types[0] : '';
+          var matchType   = (type === '') || (cardType === type);
+          var matchRarity = (rarity === '') || (card.rarity === rarity);
+
+          var matchFav = true;
+          if (showFavOnly) {
+            matchFav = false;
+            for (var j = 0; j < favs.length; j++) {
+              if (favs[j].id === card.id) { matchFav = true; break; }
+            }
+          }
+
+          if (matchName && matchType && matchRarity && matchFav) {
+            filtered.push(card);
+          }
+        }
+
+        currentPage = 1;
+        saveFilterState();
+        renderGrid();
+        renderPagination();
+        $('#resultsCount').text(filtered.length + ' card(s) found');
+      }
+
+      // ==========================================
+      // RENDER CARDS
+      // ==========================================
+      function renderGrid() {
+        var grid  = $('#galleryGrid').empty();
+        var start = (currentPage - 1) * pageSize;
+        var page  = filtered.slice(start, start + pageSize);
+
+       if (page.length === 0) {
+      if (showFavOnly) {
+      grid.html('<div class="col-12 text-center py-5"><i class="bi bi-heart text-muted" style="font-size:3rem;"></i><p style="color: #ffcc00; margin-top: 1rem;">No favourite cards yet.<br>Click the heart button on any card to save it here!</p></div>');
+     } else {
+      grid.html('<div class="col-12 text-center py-5"><p class="text-muted">No cards found.</p></div>');
+     }
+  return;
+}
+
+        for (var i = 0; i < page.length; i++) {
+          var card   = page[i];
+          var faved  = isFav(card.id);
+          var type   = (card.types && card.types[0]) ? card.types[0] : 'Unknown';
+          var img    = card.images ? card.images.small : '';
+          var hp     = card.hp ? 'HP ' + card.hp : '';
+          var rarity = card.rarity || 'Unknown';
+          var favBtn = faved
+            ? '<button class="btn btn-danger btn-sm w-100 mt-2 fav-btn" data-id="' + card.id + '">❤️ Saved</button>'
+            : '<button class="btn btn-outline-danger btn-sm w-100 mt-2 fav-btn" data-id="' + card.id + '">🤍 Favourite</button>';
+
+          var html = '<div class="col-6 col-sm-4 col-md-3 col-lg-2">'
+            + '<div class="card h-100 card-item" data-id="' + card.id + '">'
+            + '<img src="' + img + '" class="card-img-top" alt="' + card.name + '" loading="lazy" />'
+            + '<div class="card-body p-2">'
+            + '<p class="card-title fw-bold small mb-1">' + card.name + '</p>'
+            + '<span class="badge bg-secondary badge-type">' + type + '</span>'
+            + (hp ? ' <span class="badge bg-warning text-dark badge-type">' + hp + '</span>' : '')
+            + '<p class="text-muted small mt-1 mb-1">' + rarity + '</p>'
+            + favBtn
+            + '</div>'
+            + '</div>'
+            + '</div>';
+
+          grid.append(html);
+        }
+
+        // Click card -> go to details
+        $('.card-item').on('click', function(e) {
+          if ($(e.target).hasClass('fav-btn') || $(e.target).closest('.fav-btn').length) return;
+          var cardId = $(this).data('id');
+          for (var i = 0; i < allCards.length; i++) {
+            if (allCards[i].id === cardId) {
+              sessionStorage.setItem('ptcg_selected_card', JSON.stringify(allCards[i]));
+              window.location.href = 'card-details.html?id=' + cardId;
+              break;
+            }
+          }
+        });
+
+        // Favourite button
+        $('.fav-btn').on('click', function(e) {
+          e.stopPropagation();
+          var cardId = $(this).data('id');
+          var card;
+          for (var i = 0; i < allCards.length; i++) {
+            if (allCards[i].id === cardId) { card = allCards[i]; break; }
+          }
+          if (!card) return;
+
+          if (isFav(cardId)) {
+            // Remove from favourites
+            var favs = PokemonApp.collection.getAll();
+            for (var j = 0; j < favs.length; j++) {
+              if (favs[j].id === cardId) {
+                PokemonApp.collection.remove(j);
+                break;
+              }
+            }
+            $(this).removeClass('btn-danger').addClass('btn-outline-danger').html('🤍 Favourite');
+          } else {
+            // Add to favourites
+            PokemonApp.collection.addSilent({
+              id:    card.id,
+              name:  card.name,
+              image: card.images ? card.images.small : '',
+              type:  (card.types && card.types[0]) ? card.types[0] : 'Unknown'
+            });
+            $(this).removeClass('btn-outline-danger').addClass('btn-danger').html('❤️ Saved');
+          }
+          updateFavCount();
+          if (showFavOnly) applyFilters();
+        });
+      }
+
+      // ==========================================
+      // PAGINATION
+      // ==========================================
+      function renderPagination() {
+        var wrap  = $('#paginationWrap').empty();
+        var total = Math.ceil(filtered.length / pageSize);
+        if (total <= 1) return;
+
+        // Prev button
+        var prevDisabled = (currentPage === 1) ? 'disabled' : '';
+        wrap.append('<button class="btn btn-outline-secondary btn-sm ' + prevDisabled + '" id="prevBtn">‹ Prev</button>');
+
+        // Page numbers
+        var start = Math.max(1, currentPage - 2);
+        var end   = Math.min(total, start + 4);
+        for (var p = start; p <= end; p++) {
+          var active = (p === currentPage) ? 'btn-warning' : 'btn-outline-secondary';
+          wrap.append('<button class="btn btn-sm ' + active + ' page-btn" data-page="' + p + '">' + p + '</button>');
+        }
+
+        // Next button
+        var nextDisabled = (currentPage === total) ? 'disabled' : '';
+        wrap.append('<button class="btn btn-outline-secondary btn-sm ' + nextDisabled + '" id="nextBtn">Next ›</button>');
+
+        // Events
+        $('#prevBtn').on('click', function() {
+          if (currentPage > 1) { currentPage--; saveFilterState(); renderGrid(); renderPagination(); window.scrollTo(0, 0); }
+        });
+        $('#nextBtn').on('click', function() {
+          if (currentPage < total) { currentPage++; saveFilterState(); renderGrid(); renderPagination(); window.scrollTo(0, 0); }
+        });
+        $('.page-btn').on('click', function() {
+          currentPage = parseInt($(this).data('page'));
+          saveFilterState();
+          renderGrid();
+          renderPagination();
+          window.scrollTo(0, 0);
+        });
+      }
+  // ==========================================
+      // EVENTS
+      // ==========================================
+      var searchTimer;
+      $('#searchInput').on('input', function() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(applyFilters, 400);
+      });
+
+      $('#typeFilter, #rarityFilter').on('change', function() {
+        applyFilters();
+      });
+
+      $('#favFilterBtn').on('click', function() {
+        showFavOnly = !showFavOnly;
+        if (showFavOnly) {
+          $(this).removeClass('btn-outline-danger').addClass('btn-danger');
+        } else {
+          $(this).removeClass('btn-danger').addClass('btn-outline-danger');
+        }
+        applyFilters();
+      });
+
+      // ==========================================
+      // AUTO-SET ACTIVE NAV LINK
+      // ==========================================
+      function setActiveNavLink() {
+        var currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        
+
+        $('.nav-link').removeClass('active');
+        
+  
+        if (currentPage === '' || currentPage === 'index.html') {
+          $('a[href="index.html"]').addClass('active');
+        } else if (currentPage === 'gallery.html') {
+          $('a[href="gallery.html"]').addClass('active');
+        } else if (currentPage === 'how-to-play.html') {
+          $('a[href="how-to-play.html"]').addClass('active');
+        } else if (currentPage === 'my-collection.html') {
+          $('a[href="my-collection.html"]').addClass('active');
+        }
+      }
+      // ==========================================
+      // INIT
+      // ==========================================
+      $(document).ready(function() {
+        loadFilterState();
+        fetchCards();
+      });
+
+      
+    </script>
+  </body>
+  </html>

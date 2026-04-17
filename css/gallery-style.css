@@ -1,0 +1,74 @@
+/* ── Navbar fonts — identical to homepage ── */
+.glass-nav {
+    background: rgba(8, 14, 8, 0.92) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(212, 160, 23, 0.25);
+    top: 4px;
+}
+
+.navbar-brand {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 1.6rem !important;
+    letter-spacing: 2px;
+}
+
+.nav-link {
+    color: #b0bec5 !important;
+    font-family: 'Barlow Condensed', sans-serif !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.85rem;
+    transition: color 0.25s ease;
+    position: relative;
+    padding-bottom: 4px !important;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+    height: 2px;
+    background: #facc15;
+    transition: left 0.3s, right 0.3s;
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    left: 0;
+    right: 0;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: #facc15 !important;
+}
+
+body {
+    background-color: #000000;
+    padding-top: 72px;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: contain;
+    padding: 10px;
+    background-color: #242020;
+}
+
+.card {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.badge-type {
+    font-size: 0.75rem;
+}

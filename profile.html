@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trainer Profile | Pokemon TCG Hub</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="css/style-profile.css" />
+
+    
+</head>
+
+<body>
+    <!-- Hexagon background decorations (same as index.html) -->
+    <div class="decor-container-left">
+        <img src="images/hexagon.png" alt="" class="hex hex-1" />
+        <img src="images/hexagon.png" alt="" class="hex hex-2" />
+        <img src="images/hexagon.png" alt="" class="hex hex-3" />
+    </div>
+    <div class="decor-container-right">
+        <img src="images/hexagon.png" alt="" class="hex hex-4" />
+        <img src="images/hexagon.png" alt="" class="hex hex-5" />
+        <img src="images/hexagon.png" alt="" class="hex hex-6" />
+    </div>
+
+    <!-- ── NAVBAR (same as index.html) ── -->
+    <nav class="navbar navbar-expand-lg fixed-top glass-nav">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="index.html">
+                <i class="fa-solid fa-gamepad text-warning me-2"></i>TCG Fan Hub
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fa-solid fa-bars text-white fs-3"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="how-to-play.html">How to Play</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="gallery.html">Database</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="my-collection.html">My Collection</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="profile.html">Profile</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── PAGE HEADER ── -->
+    <div class="container" style="
+        padding-top: 30px;
+        padding-bottom: 10px;
+        position: relative;
+        z-index: 1;
+      ">
+        <p class="section-title">Trainer Profile</p>
+        <p style="
+          font-family: &quot;Barlow Condensed&quot;, sans-serif;
+          color: rgba(255, 255, 255, 0.4);
+          font-size: 0.82rem;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          margin: 0;
+        ">
+            Your identity &amp; stats — powered by Cookies, localStorage &amp;
+            sessionStorage
+        </p>
+    </div>
+
+    <div class="container pb-5" style="position: relative; z-index: 1">
+        <div class="row g-4">
+            <!-- COLUMN LEFT: Trainer ID Card -->
+            <div class="col-lg-5">
+                <div class="id-card">
+                    <!-- Avatar -->
+                    <div class="text-center">
+                        <div class="avatar-wrap">
+                            <span id="avatar-emoji">&#9889;</span>
+                        </div>
+
+                        <!-- Trainer name from Cookie -->
+                        <div class="trainer-label">Trainer</div>
+                        <div class="trainer-display-name" id="display-name">Trainer</div>
+
+                        <!-- Rank badge — changes based on collection size -->
+                        <div id="rank-badge" class="rank-badge rank-rookie mx-auto" style="width: fit-content">
+                            <i class="fas fa-seedling"></i>
+                            <span id="rank-text">Rookie</span>
+                        </div>
+
+                        <!-- Edit name button -->
+                        <br />
+                        <button class="btn-edit-name" id="btn-open-modal">
+                            <i class="fas fa-pencil me-1"></i> Edit Trainer Name
+                        </button>
+                    </div>
+
+                    <hr class="id-divider" />
+
+                    <!-- Info row -->
+                    <div class="id-info-row">
+                        <div class="id-info-item">
+                            <div class="id-info-label">Cards Collected</div>
+                            <div class="id-info-value"><span id="info-count">0</span></div>
+                        </div>
+                        <div class="id-info-item">
+                            <div class="id-info-label">Card Types</div>
+                            <div class="id-info-value"><span id="info-types">0</span></div>
+                        </div>
+                        <div class="id-info-item">
+                            <div class="id-info-label">Name stored in</div>
+                            <div class="id-info-value">
+                                <span style="color: #facc15">Cookie</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="id-divider" />
+
+                    <!-- Quick link to My Binder -->
+                    <a href="my-collection.html" class="btn btn-warning w-100 fw-bold" style="
+                font-family: &quot;Barlow Condensed&quot;, sans-serif;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+              ">
+                        <i class="fas fa-book me-2"></i>Open My Binder
+                    </a>
+                </div>
+            </div>
+
+            <!-- COLUMN RIGHT: Stats Wall + Trainer List-->
+            <div class="col-lg-7">
+                <div class="row g-3">
+                    <!-- LOCAL STORAGE box -->
+                    <div class="col-md-6">
+                        <div class="stat-box local-box h-100">
+                            <span class="stat-box-icon">&#128190;</span>
+                            <div class="stat-box-title">My Card Library</div>
+                            <div class="stat-box-number" id="stat-cards">0</div>
+                            <div class="stat-box-desc">
+                                cards saved in
+                                <strong id="stat-trainer-name-local" style="color: white">Trainer</strong>'s collection
+                            </div>
+                            <span class="storage-tag tag-local">localStorage</span>
+                        </div>
+                    </div>
+
+                    <!-- SESSION STORAGE box -->
+                    <div class="col-md-6">
+                        <div class="stat-box session-box h-100">
+                            <span class="stat-box-icon">&#128336;</span>
+                            <div class="stat-box-title">This Session</div>
+                            <div class="stat-box-number" id="stat-pages">0</div>
+                            <div class="stat-box-desc">
+                                pages visited this session.<br />
+                                Counter resets when you close the tab.
+                            </div>
+                            <span class="storage-tag tag-session">sessionStorage</span>
+                        </div>
+                    </div>
+
+                    <!-- DANGER ZONE box -->
+                    <div class="col-12">
+                        <div class="stat-box danger-box">
+                            <span class="stat-box-icon">&#9888;&#65039;</span>
+                            <div class="stat-box-title">Danger Zone</div>
+                            <div class="stat-box-desc">
+                                Delete all saved cards from
+                                <strong id="danger-trainer-name" style="color: #f87171">Trainer</strong>'s collection
+                                and clear all site data. This action cannot be
+                                undone.
+                            </div>
+                            <button class="btn-danger-reset" id="btn-reset-all">
+                                <i class="fas fa-trash me-2"></i>Reset All Data for This
+                                Trainer
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TRAINER SWITCHER box -->
+                    <div class="col-12">
+                        <div class="stat-box" style="border-color: rgba(250, 204, 21, 0.15)">
+                            <div class="d-flex align-items-center justify-content-between mb-14px"
+                                style="margin-bottom: 14px">
+                                <div>
+                                    <div class="stat-box-title">Saved Trainers</div>
+                                    <div class="stat-box-desc" style="margin-top: 2px">
+                                        Each trainer has their own card collection stored in
+                                        localStorage.
+                                        <span class="storage-tag tag-cookie"
+                                            style="vertical-align: middle; margin-left: 4px">Cookie</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="trainer-list">
+                                <div style="
+                      font-family: &quot;Barlow&quot;, sans-serif;
+                      font-size: 0.82rem;
+                      color: rgba(255, 255, 255, 0.3);
+                      text-align: center;
+                      padding: 16px 0;
+                    ">
+                                    No other trainers found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Edit Name Modal ── -->
+    <div id="name-modal" class="modal-overlay" style="display: none">
+        <div class="modal-box">
+            <h5>Edit Trainer Name</h5>
+            <p>
+                Your name is saved as a Cookie (30 days).<br />
+                Each trainer name has its own separate card collection!
+            </p>
+            <input type="text" id="inp-name" maxlength="20" placeholder="Enter trainer name..." />
+            <button class="btn-modal-save" id="btn-save-name">
+                <i class="fas fa-cookie-bite me-1"></i> Save Name
+            </button>
+        </div>
+    </div>
+
+    <div class="toast-wrap" id="toast-wrap"></div>
+
+    <!-- ── FOOTER ── -->
+    <footer class="text-white py-4 text-center mt-auto border-top border-secondary">
+        <p class="mb-1 text-secondary" style="font-size: 0.9rem">
+            &copy; 2026 UCCD2323 Student Project.
+        </p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="./storage-manager.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            /*COOKIE FUNCTIONS  (Chapter 4)
+           Stores: trainer name (30 days)*/
+            function setCookie(name, value, days) {
+                var date = new Date();
+                date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+                var expires = "; expires=" + date.toUTCString();
+                document.cookie =
+                    name + "=" + encodeURIComponent(value) + expires + "; path=/";
+            }
+
+            function getCookie(name) {
+                var cookies = document.cookie.split("; ");
+                var i;
+                for (i = 0; i < cookies.length; i++) {
+                    var parts = cookies[i].split("=");
+                    if (parts[0] === name) {
+                        return decodeURIComponent(parts[1]);
+                    }
+                }
+                return "";
+            }
+
+            /* SESSION STORAGE  (Chapter 4)
+           Tracks: how many pages the user visited this session*/
+            var pageCount = sessionStorage.getItem("pageCount");
+            if (pageCount === null) {
+                pageCount = 1;
+            } else {
+                pageCount = parseInt(pageCount) + 1;
+            }
+            sessionStorage.setItem("pageCount", pageCount);
+            $("#stat-pages").text(pageCount);
+
+            /*LOCAL STORAGE — per-trainer collection key
+           Key format: pokemonDeck_[trainerName]
+           Default key (unnamed): pokemonDecK*/
+            function getCollectionKey(trainerName) {
+                if (trainerName && trainerName !== "") {
+                    return "pokemonDeck_" + trainerName;
+                }
+                return "pokemonDeck";
+            }
+
+            function getCardsForTrainer(trainerName) {
+                var key = getCollectionKey(trainerName);
+                try {
+                    return JSON.parse(localStorage.getItem(key)) || [];
+                } catch (e) {
+                    return [];
+                }
+            }
+
+            /* ===================================================
+           RANK LOGIC — based on card count
+           0-9:  Rookie (green)
+           10-29: Elite (blue)
+           30+:  Master (gold)
+        =================================================== */
+            function getRank(count) {
+                if (count >= 30)
+                    return {
+                        text: "Master Trainer",
+                        css: "rank-master",
+                        icon: "fa-crown",
+                    };
+                if (count >= 10)
+                    return {
+                        text: "Elite Trainer",
+                        css: "rank-elite",
+                        icon: "fa-star",
+                    };
+                return {
+                    text: "Rookie Trainer",
+                    css: "rank-rookie",
+                    icon: "fa-seedling",
+                };
+            }
+
+            /*AVATAR EMOJI — changes by rank*/
+            function getAvatarEmoji(count) {
+                if (count >= 30) return "&#128081;"; /* crown */
+                if (count >= 10) return "&#9889;"; /* lightning */
+                return "&#127815;"; /* plant = rookie */
+            }
+
+            /*REFRESH UI — call this whenever name changes*/
+            function refreshUI() {
+                var name = getCookie("trainerName");
+                var cards = getCardsForTrainer(name);
+                var count = cards.length;
+
+                // Display name
+                var displayName = name !== "" ? name : "Trainer";
+                $("#display-name").text(displayName);
+                $("#stat-trainer-name-local").text(displayName);
+                $("#danger-trainer-name").text(displayName);
+
+                // Avatar emoji
+                $("#avatar-emoji").html(getAvatarEmoji(count));
+
+                // Rank badge
+                var rank = getRank(count);
+                $("#rank-badge")
+                    .removeClass("rank-rookie rank-elite rank-master")
+                    .addClass(rank.css);
+                $("#rank-badge i").attr("class", "fas " + rank.icon);
+                $("#rank-text").text(rank.text);
+
+                // Stats
+                $("#stat-cards").text(count);
+                $("#info-count").text(count);
+
+                // Count unique types
+                var uTypes = [];
+                var i;
+                for (i = 0; i < cards.length; i++) {
+                    var t = cards[i].type;
+                    if (t && t !== "Unknown" && uTypes.indexOf(t) === -1) {
+                        uTypes.push(t);
+                    }
+                }
+                $("#info-types").text(uTypes.length);
+
+                // Render trainer switcher list
+                renderTrainerList(name);
+            }
+
+            /* TRAINER LIST — shows all saved trainer collections
+           Scans localStorage keys starting with "pokemonDeck"*/
+            function renderTrainerList(activeName) {
+                var trainers = [];
+                var i;
+                for (i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    // Find all pokemon deck keys
+                    if (key === "pokemonDeck" || key.indexOf("pokemonDeck_") === 0) {
+                        var tName =
+                            key === "pokemonDeck" ? "" : key.replace("pokemonDeck_", "");
+                        var tCards = [];
+                        try {
+                            tCards = JSON.parse(localStorage.getItem(key)) || [];
+                        } catch (e) {
+                            tCards = [];
+                        }
+                        trainers.push({ name: tName, count: tCards.length, key: key });
+                    }
+                }
+
+                if (trainers.length === 0) {
+                    $("#trainer-list").html(
+                        '<div style="font-family:Barlow,sans-serif; font-size:0.82rem; color:rgba(255,255,255,0.3); text-align:center; padding:16px 0;">No saved trainers yet.</div>',
+                    );
+                    return;
+                }
+
+                var html = "";
+                var j;
+                for (j = 0; j < trainers.length; j++) {
+                    var t = trainers[j];
+                    var label = t.name !== "" ? t.name : "(Default Trainer)";
+                    var isActive =
+                        t.name === activeName || (t.name === "" && activeName === "");
+
+                    html += '<div class="trainer-list-item">';
+                    html += "<div>";
+                    html += '<div class="trainer-list-name">' + label + "</div>";
+                    html +=
+                        '<div class="trainer-list-count">' +
+                        t.count +
+                        " card(s) saved</div>";
+                    html += "</div>";
+                    if (isActive) {
+                        html += '<span class="active-trainer-tag">Active</span>';
+                    } else {
+                        html +=
+                            '<button class="btn-switch-trainer" onclick="switchTrainer(\'' +
+                            t.name +
+                            "')\">Switch</button>";
+                    }
+                    html += "</div>";
+                }
+                $("#trainer-list").html(html);
+            }
+
+            /* ── Switch to a different trainer ── */
+            window.switchTrainer = function (name) {
+                setCookie("trainerName", name, 30);
+                refreshUI();
+                showToast(
+                    "Switched to trainer: " + (name || "Default") + "!",
+                    "#facc15",
+                );
+            };
+
+            /* OPEN CLOSE MODEL */
+            $("#btn-open-modal").on("click", function () {
+                $("#inp-name").val(getCookie("trainerName"));
+                $("#name-modal").fadeIn(150);
+                setTimeout(function () {
+                    $("#inp-name").focus();
+                }, 160);
+            });
+
+            $("#name-modal").on("click", function (e) {
+                if ($(e.target).is("#name-modal")) {
+                    $("#name-modal").fadeOut(150);
+                }
+            });
+
+            $("#inp-name").on("keydown", function (e) {
+                if (e.key === "Enter") {
+                    saveName();
+                }
+            });
+
+            $("#btn-save-name").on("click", function () {
+                saveName();
+            });
+
+            function saveName() {
+                var newName = $("#inp-name").val().trim();
+                if (newName === "") return;
+
+                // Save trainer name to Cookie ONLY (30 days)
+                // Do NOT write to localStorage — that would break per-trainer key lookups
+                setCookie("trainerName", newName, 30);
+
+                $("#name-modal").fadeOut(150);
+                refreshUI();
+                showToast('Trainer name saved: "' + newName + '"', "#facc15");
+            }
+            /*DANGER ZONE — reset all data for this trainer */
+            $("#btn-reset-all").on("click", function () {
+                var name = getCookie("trainerName");
+                var label = name !== "" ? name : "Default Trainer";
+                if (
+                    !confirm(
+                        'Delete ALL cards for "' +
+                        label +
+                        '" and clear site data?\n\nThis cannot be undone!',
+                    )
+                ) {
+                    return;
+                }
+
+                // Remove this trainer's card collection from localStorage
+                var key = getCollectionKey(name);
+                localStorage.removeItem(key);
+
+                // Clear sessionStorage page counter
+                sessionStorage.removeItem("pageCount");
+                sessionStorage.removeItem("collectionVisits");
+
+                refreshUI();
+                $("#stat-pages").text(0);
+                showToast('All data for "' + label + '" has been reset.', "#f87171");
+            });
+
+            /* TOAST NOTIFICATION*/
+            function showToast(msg, color) {
+                var $t = $(
+                    '<div class="toast-item"><span style="color:' +
+                    color +
+                    ';">&#9679;</span> ' +
+                    msg +
+                    "</div>",
+                );
+                $("#toast-wrap").append($t);
+                setTimeout(function () {
+                    $t.remove();
+                }, 2600);
+            }
+
+            /* INITIAL LOAD */
+            refreshUI();
+        }); // end document.ready
+    </script>
+</body>
+
+</html>
